@@ -36,4 +36,24 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * 返回用户的gravatar头像url
+     * @param string $size 头像的大小参数
+     * @return string 用户头像的gravatar url
+     */
+    public function gravatar($size = '100')
+    {
+        $hash = md5(strtolower(trim($this->attributes['email'])));
+        return "http://www.gravatar.com/avatar/$hash?s=$size";
+    }
+
+    /**
+     * 对用户密码加密
+     * @param string $password 密码
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }
