@@ -37,6 +37,15 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->activation_token = str_random(30);
+        });
+    }
+
     /**
      * 返回用户的gravatar头像url
      * @param string $size 头像的大小参数
